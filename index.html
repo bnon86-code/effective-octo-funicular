@@ -1,1 +1,311 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>قياس أثر البرامج | الثانوية الثالثة بالخبر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g1:#006B3F; --g2:#008C52; --gold:#C5973A; --gold2:#E8B84B;
+  --bg:#F0F7F3; --text:#1A3A2A; --muted:#5A7A68; --border:#D4E8DC;
+  --digital:#1565C0; --digital-pale:#E3F2FD;
+  --aware:#6A1B9A; --aware-pale:#F3E5F5;
+  --shadow:0 4px 20px rgba(0,107,63,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);}
+.hdr{background:linear-gradient(135deg,#003D24,#006B3F);padding:16px;color:white;text-align:center;}
+.hdr .badge{font-size:11px;opacity:.7;margin-bottom:4px;}
+.hdr h1{font-family:'Cairo',sans-serif;font-size:20px;font-weight:900;line-height:1.3;}
+.hdr p{font-size:12px;opacity:.8;margin-top:6px;}
+.hdr .staff{margin-top:10px;font-size:12px;opacity:.85;line-height:1.8;}
+.hdr .staff strong{color:var(--gold2);}
+.tabs{display:flex;background:white;border-bottom:3px solid var(--border);position:sticky;top:0;z-index:999;box-shadow:0 2px 10px rgba(0,0,0,0.08);}
+.tab{flex:1;padding:14px 4px;border:none;background:none;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-3px;transition:all .2s;-webkit-appearance:none;}
+.tab.t-d{color:var(--digital);border-bottom-color:var(--digital);background:var(--digital-pale);}
+.tab.t-a{color:var(--aware);border-bottom-color:var(--aware);background:var(--aware-pale);}
+.tab.t-s{color:var(--g1);border-bottom-color:var(--g1);background:#E8F5E9;}
+.page{display:none;padding:16px;}
+.page.show{display:block;}
+.prog-hdr{border-radius:14px;padding:16px 18px;color:white;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.prog-hdr.dh{background:linear-gradient(135deg,#0D47A1,#1976D2);}
+.prog-hdr.ah{background:linear-gradient(135deg,#4A148C,#7B1FA2);}
+.prog-hdr .ico{font-size:32px;}
+.prog-hdr .inf h2{font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;}
+.prog-hdr .inf p{font-size:12px;opacity:.85;margin-top:2px;}
+.prog-hdr .cnt{margin-right:auto;background:rgba(255,255,255,0.2);border-radius:10px;padding:6px 14px;text-align:center;}
+.prog-hdr .cnt .n{font-size:24px;font-weight:900;font-family:'Cairo',sans-serif;}
+.prog-hdr .cnt .l{font-size:10px;opacity:.8;}
+.prog-list{display:flex;flex-direction:column;gap:12px;}
+.prog-card{background:white;border-radius:12px;box-shadow:var(--shadow);overflow:hidden;}
+.prog-card.dc{border-right:5px solid var(--digital);}
+.prog-card.ac{border-right:5px solid var(--aware);}
+.prog-top{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;-webkit-user-select:none;user-select:none;min-height:60px;}
+.prog-top .ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.dc .prog-top .ico{background:var(--digital-pale);}
+.ac .prog-top .ico{background:var(--aware-pale);}
+.prog-top .nm{font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;flex:1;line-height:1.3;}
+.dc .prog-top .nm{color:var(--digital);}
+.ac .prog-top .nm{color:var(--aware);}
+.prog-top .arr{font-size:20px;color:var(--muted);transition:transform .3s;flex-shrink:0;line-height:1;}
+.prog-card.open .arr{transform:rotate(180deg);}
+.prog-form{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.prog-card.open .prog-form{display:block;}
+.ftitle{font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin:14px 0 10px;display:flex;align-items:center;gap:8px;}
+.ftitle::after{content:'';flex:1;height:1px;background:var(--border);}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.fgrid.full{grid-template-columns:1fr;}
+.fitem label{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px;}
+.fitem input,.fitem textarea{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:8px;font-family:'Tajawal',sans-serif;font-size:14px;color:var(--text);background:white;outline:none;-webkit-appearance:none;}
+.fitem input:focus,.fitem textarea:focus{border-color:var(--g1);}
+.fitem textarea{resize:vertical;min-height:70px;}
+.stars-wrap{display:flex;flex-direction:column;gap:12px;}
+.srow{display:flex;flex-direction:column;gap:6px;}
+.srow .slbl{font-size:13px;font-weight:600;color:var(--text);}
+.stars{display:flex;gap:6px;direction:ltr;}
+.stars input{display:none;}
+.stars label{font-size:30px;cursor:pointer;color:#DDD;line-height:1;}
+.stars input:checked ~ label{color:var(--gold);}
+.cks{display:flex;flex-wrap:wrap;gap:8px;}
+.ck{display:flex;align-items:center;gap:6px;background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:13px;}
+.ck input{width:18px;height:18px;accent-color:var(--g1);flex-shrink:0;}
+.sbtn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--g1),var(--g2));color:white;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;-webkit-appearance:none;}
+.sbtn.done{background:linear-gradient(135deg,#2E7D32,#43A047);}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.kpi{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow);border-top:4px solid;}
+.kpi .kv{font-family:'Cairo',sans-serif;font-size:32px;font-weight:900;}
+.kpi .kl{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;}
+.chart-box{background:white;border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:16px;}
+.chart-box h3{font-family:'Cairo',sans-serif;font-size:15px;font-weight:800;margin-bottom:14px;}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.blbl{font-size:11px;color:var(--text);font-weight:600;width:110px;flex-shrink:0;line-height:1.3;text-align:right;}
+.btrack{flex:1;background:var(--bg);border-radius:6px;height:24px;overflow:hidden;}
+.bfill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:white;min-width:36px;}
+.bval{font-size:11px;font-weight:700;color:var(--muted);width:32px;flex-shrink:0;text-align:left;}
+.note-item{background:var(--bg);border-radius:10px;padding:12px;margin-bottom:8px;}
+.note-item .nt{font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;}
+.note-item .nb{font-size:12px;line-height:1.7;}
+.ebtn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:white;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;-webkit-appearance:none;}
+.empty{color:var(--muted);font-size:13px;padding:8px;text-align:center;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--g1);color:white;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:9999;transition:transform .3s;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+  <body>
+<div class="hdr">
+  <div class="badge">🎓 وزارة التعليم • المملكة العربية السعودية</div>
+  <h1>📊 قياس أثر البرامج المدرسية</h1>
+  <p>النادي الرقمي | برامج الوعي الفكري</p>
+  <div class="staff">
+    المديرة: <strong>منى بنت موسى الزهراني</strong><br>
+    المنسقة: <strong>بنان مريح عسيري</strong>
+  </div>
+</div>
+<div class="tabs">
+  <button class="tab t-d" id="btn-d" onclick="goTab('d')">💻 الرقمي</button>
+  <button class="tab" id="btn-a" onclick="goTab('a')">🧠 الوعي</button>
+  <button class="tab" id="btn-s" onclick="goTab('s')">📈 إحصاءات</button>
+</div>
+<div class="page show" id="page-d">
+  <div class="prog-hdr dh">
+    <div class="ico">💻</div>
+    <div class="inf"><h2>النادي الرقمي</h2><p>قياس الأثر لكل برنامج</p></div>
+    <div class="cnt"><div class="n">5</div><div class="l">برامج</div></div>
+  </div>
+  <div class="prog-list" id="list-d"></div>
+</div>
+<div class="page" id="page-a">
+  <div class="prog-hdr ah">
+    <div class="ico">🧠</div>
+    <div class="inf"><h2>الوعي الفكري</h2><p>قياس الأثر لكل برنامج</p></div>
+    <div class="cnt"><div class="n">11</div><div class="l">برامج</div></div>
+  </div>
+  <div class="prog-list" id="list-a"></div>
+</div>
+<div class="page" id="page-s">
+  <div class="kpi-grid">
+    <div class="kpi" style="border-color:var(--digital)"><div class="kv" id="kd" style="color:var(--digital)">0</div><div class="kl">برامج رقمية مُقيّمة</div></div>
+    <div class="kpi" style="border-color:var(--aware)"><div class="kv" id="ka" style="color:var(--aware)">0</div><div class="kl">برامج وعي مُقيّمة</div></div>
+    <div class="kpi" style="border-color:var(--g1)"><div class="kv" id="ks" style="color:var(--g1)">0</div><div class="kl">إجمالي الطالبات</div></div>
+    <div class="kpi" style="border-color:var(--gold)"><div class="kv" id="kr" style="color:var(--gold)">-</div><div class="kl">متوسط التقييم</div></div>
+  </div>
+  <div class="chart-box"><h3>💻 تقييم النادي الرقمي</h3><div id="cd"></div></div>
+  <div class="chart-box"><h3>🧠 تقييم الوعي الفكري</h3><div id="ca"></div></div>
+  <div class="chart-box"><h3>📝 الملاحظات</h3><div id="cn"></div></div>
+  <button class="ebtn" onclick="doExport()">⬇️ تصدير التقرير</button>
+</div>
+<div class="toast" id="toast">✅ تم الحفظ!</div>
+<script>
+var DP=[
+  {id:'d1',ico:'🔍',nm:'خدمة تحقق من بوابة حصين'},
+  {id:'d2',ico:'🕌',nm:'تطبيق زكاتي'},
+  {id:'d3',ico:'💚',nm:'الحملة الوطنية إحسان'},
+  {id:'d4',ico:'🛡️',nm:'المتنمر الإلكتروني وكيف أصبح مكشوفاً'},
+  {id:'d5',ico:'🎮',nm:'الألعاب الإلكترونية وكيف نختار العمر المناسب'}
+];
+var AP=[
+  {id:'a1',ico:'🔍',nm:'خدمة تحقق من بوابة حصين'},
+  {id:'a2',ico:'🕌',nm:'تطبيق زكاتي'},
+  {id:'a3',ico:'💚',nm:'الحملة الوطنية إحسان'},
+  {id:'a4',ico:'⏰',nm:'ساعة وعي'},
+  {id:'a5',ico:'🌸',nm:'مبادرة كوني واعية بصحتك'},
+  {id:'a6',ico:'🌍',nm:'أهلاً بالعالم'},
+  {id:'a7',ico:'⚖️',nm:'النهج الوسطي'},
+  {id:'a8',ico:'📜',nm:'ميثاق الوعي الفكري'},
+  {id:'a9',ico:'👗',nm:'مسابقة تصميم الأزياء القديمة بلمسات حديثة'},
+  {id:'a10',ico:'🏛️',nm:'أمانة وطن والحفاظ على الموارد الوطنية'},
+  {id:'a11',ico:'🎨',nm:'حصص الانتظار وتفعيل عام الحرف 2025'}
+];
+var RL=[
+  {k:'r1',l:'اكتساب المعرفة'},
+  {k:'r2',l:'التفاعل والمشاركة'},
+  {k:'r3',l:'الأثر السلوكي'},
+  {k:'r4',l:'جودة التنفيذ'},
+  {k:'r5',l:'التقييم العام'}
+];
+var OO=['تغيير سلوكي','مهارة رقمية','رفع الوعي','مشاركة أولياء الأمور','نشر في التواصل','تحصيل أفضل'];
+function ld(id){try{return JSON.parse(localStorage.getItem('p_'+id))||null;}catch(e){return null;}}
+function sv(id,d){try{localStorage.setItem('p_'+id,JSON.stringify(d));}catch(e){}}
+function mkCard(p,type){
+  var cls=type==='d'?'dc':'ac';
+  var stars='';
+  for(var i=0;i<RL.length;i++){
+    var r=RL[i];
+    var s='<div class="stars">';
+    for(var n=5;n>=1;n--){
+      s+='<input type="radio" name="'+p.id+'-'+r.k+'" id="r'+p.id+r.k+n+'" value="'+n+'">';
+      s+='<label for="r'+p.id+r.k+n+'">★</label>';
+    }
+    s+='</div>';
+    stars+='<div class="srow"><span class="slbl">'+r.l+'</span>'+s+'</div>';
+  }
+  var checks='';
+  for(var j=0;j<OO.length;j++){
+    checks+='<label class="ck"><input type="checkbox" name="'+p.id+'-ck" value="'+OO[j]+'"> '+OO[j]+'</label>';
+  }
+  return '<div class="prog-card '+cls+'" id="pc-'+p.id+'">'
+    +'<div class="prog-top" id="top-'+p.id+'">'
+    +'<div class="ico">'+p.ico+'</div>'
+    +'<div class="nm">'+p.nm+'</div>'
+    +'<div class="arr">▼</div>'
+    +'</div>'
+    +'<div class="prog-form">'
+    +'<div class="ftitle">📅 معلومات التنفيذ</div>'
+    +'<div class="fgrid">'
+    +'<div class="fitem"><label>التاريخ</label><input type="date" id="'+p.id+'-dt"></div>'
+    +'<div class="fitem"><label>عدد الطالبات</label><input type="number" id="'+p.id+'-st" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'<div class="fitem"><label>عدد الجلسات</label><input type="number" id="'+p.id+'-ss" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'<div class="fitem"><label>المدة (دقيقة)</label><input type="number" id="'+p.id+'-du" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'</div>'
+    +'<div class="ftitle">⭐ تقييم الأثر</div>'
+    +'<div class="stars-wrap">'+stars+'</div>'
+    +'<div class="ftitle">🎯 النواتج</div>'
+    +'<div class="cks">'+checks+'</div>'
+    +'<div class="ftitle">📝 ملاحظات</div>'
+    +'<div class="fgrid full"><div class="fitem"><label>ملاحظات المنسقة</label><textarea id="'+p.id+'-nt" placeholder="اكتبي ملاحظاتك..."></textarea></div></div>'
+    +'<button class="sbtn" id="sb-'+p.id+'" onclick="doSave(\''+p.id+'\',\''+type+'\')">💾 حفظ التقييم</button>'
+    +'</div></div>';
+}
+document.getElementById('list-d').innerHTML=DP.map(function(p){return mkCard(p,'d');}).join('');
+document.getElementById('list-a').innerHTML=AP.map(function(p){return mkCard(p,'a');}).join('');
+function attachHandlers(){
+  var all=DP.concat(AP);
+  for(var i=0;i<all.length;i++){
+    (function(id){
+      var top=document.getElementById('top-'+id);
+      if(top){
+        top.addEventListener('click',function(){tog(id);});
+        top.addEventListener('touchend',function(e){e.preventDefault();tog(id);});
+      }
+    })(all[i].id);
+  }
+}
+function restore(){
+  var all=DP.concat(AP);
+  for(var i=0;i<all.length;i++){
+    var p=all[i];var d=ld(p.id);if(!d)continue;
+    var fs=['dt','st','ss','du','nt'];
+    for(var j=0;j<fs.length;j++){var el=document.getElementById(p.id+'-'+fs[j]);if(el&&d[fs[j]])el.value=d[fs[j]];}
+    for(var k=0;k<RL.length;k++){var r=RL[k];if(d[r.k]){var el2=document.getElementById('r'+p.id+r.k+d[r.k]);if(el2)el2.checked=true;}}
+    if(d.ck){var cks=document.querySelectorAll('input[name="'+p.id+'-ck"]');for(var m=0;m<cks.length;m++)cks[m].checked=d.ck.indexOf(cks[m].value)>=0;}
+    var sb=document.getElementById('sb-'+p.id);if(sb){sb.classList.add('done');sb.textContent='✅ تم الحفظ';}
+  }
+}
+attachHandlers();restore();
+function tog(id){
+  var el=document.getElementById('pc-'+id);
+  var wasOpen=el.classList.contains('open');
+  var all=document.querySelectorAll('.prog-card.open');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('open');
+  if(!wasOpen){el.classList.add('open');setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'nearest'});},150);}
+}
+function goTab(t){
+  var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++)pages[i].classList.remove('show');
+  var tabs=document.querySelectorAll('.tab');for(var j=0;j<tabs.length;j++)tabs[j].classList.remove('t-d','t-a','t-s');
+  document.getElementById('page-'+t).classList.add('show');
+  document.getElementById('btn-'+t).classList.add('t-'+t);
+  if(t==='s')buildStats();
+}
+function doSave(id,type){
+  var d={type:type};
+  var fs=['dt','st','ss','du','nt'];
+  for(var i=0;i<fs.length;i++){var el=document.getElementById(id+'-'+fs[i]);d[fs[i]]=el?el.value:'';}
+  for(var j=0;j<RL.length;j++){var r=RL[j];var c=document.querySelector('input[name="'+id+'-'+r.k+'"]:checked');d[r.k]=c?parseInt(c.value):0;}
+  var cks=document.querySelectorAll('input[name="'+id+'-ck"]:checked');d.ck=[];
+  for(var k=0;k<cks.length;k++)d.ck.push(cks[k].value);
+  sv(id,d);
+  var sb=document.getElementById('sb-'+id);sb.classList.add('done');sb.textContent='✅ تم الحفظ';
+  showToast('تم حفظ التقييم بنجاح ✅');
+}
+function buildStats(){
+  var all=DP.concat(AP);var dc=0,ac=0,ts=0,rats=[];
+  for(var i=0;i<all.length;i++){var d=ld(all[i].id);if(!d)continue;if(d.type==='d')dc++;else ac++;ts+=parseInt(d.st||0);for(var j=0;j<RL.length;j++){if(d[RL[j].k])rats.push(d[RL[j].k]);}}
+  document.getElementById('kd').textContent=dc;document.getElementById('ka').textContent=ac;document.getElementById('ks').textContent=ts;
+  var avg=rats.length?(rats.reduce(function(a,b){return a+b;},0)/rats.length).toFixed(1)+' ★':'-';
+  document.getElementById('kr').textContent=avg;
+  function mkChart(progs,elId,color){
+    var el=document.getElementById(elId);el.innerHTML='';var any=false;
+    for(var i=0;i<progs.length;i++){var p=progs[i];var d=ld(p.id);if(!d)continue;any=true;
+      var sum=0;for(var j=0;j<RL.length;j++)sum+=d[RL[j].k]||0;
+      var av=sum/RL.length;var pct=Math.round((av/5)*100);
+      var row=document.createElement('div');row.className='brow';
+      row.innerHTML='<span class="blbl">'+p.ico+' '+p.nm+'</span><div class="btrack"><div class="bfill" style="width:'+pct+'%;background:'+color+'">'+av.toFixed(1)+'/5</div></div><span class="bval">'+(d.st||0)+'</span>';
+      el.appendChild(row);}
+    if(!any)el.innerHTML='<p class="empty">لم يتم إدخال بيانات بعد</p>';
+  }
+  mkChart(DP,'cd','linear-gradient(90deg,#1565C0,#42A5F5)');
+  mkChart(AP,'ca','linear-gradient(90deg,#6A1B9A,#AB47BC)');
+  var cn=document.getElementById('cn');cn.innerHTML='';var hasN=false;
+  for(var i=0;i<all.length;i++){var p=all[i];var d=ld(p.id);if(!d||!d.nt)continue;hasN=true;
+    var el=document.createElement('div');el.className='note-item';
+    el.innerHTML='<div class="nt" style="color:'+(d.type==='d'?'var(--digital)':'var(--aware)')+'">'+p.ico+' '+p.nm+'</div><div class="nb">'+d.nt+'</div>';
+    cn.appendChild(el);}
+  if(!hasN)cn.innerHTML='<p class="empty">لا توجد ملاحظات بعد</p>';
+}
+function doExport(){
+  var all=DP.concat(AP);
+  var t='تقرير أثر البرامج\nالثانوية الثالثة بالخبر\nالمديرة: منى بنت موسى الزهراني\nالمنسقة: بنان مريح عسيري\n\n';
+  for(var i=0;i<all.length;i++){var p=all[i];var d=ld(p.id);if(!d)continue;
+    t+=p.nm+'\nالنوع: '+(d.type==='d'?'النادي الرقمي':'الوعي الفكري')+'\nالطالبات: '+(d.st||0)+' | الجلسات: '+(d.ss||0)+'\n';
+    for(var j=0;j<RL.length;j++){if(d[RL[j].k])t+=RL[j].l+': '+d[RL[j].k]+'/5\n';}
+    if(d.ck&&d.ck.length)t+='النواتج: '+d.ck.join('، ')+'\n';
+    if(d.nt)t+='ملاحظات: '+d.nt+'\n';t+='---\n';}
+  try{navigator.clipboard.writeText(t).then(function(){showToast('تم نسخ التقرير 📋');}).catch(function(){fbCopy(t);});}catch(e){fbCopy(t);}
+}
+function fbCopy(t){
+  var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+  document.body.appendChild(a);a.focus();a.select();
+  try{document.execCommand('copy');showToast('تم نسخ التقرير 📋');}catch(e){showToast('افتحي في متصفح آخر');}
+  document.body.removeChild(a);
+}
+function showToast(m){
+  var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+</script>
+</body>
+</html>
+
