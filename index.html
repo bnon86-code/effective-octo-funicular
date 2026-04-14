@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قياس أثر البرامج | الثانوية الثالثة بالخبر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g1: #006B3F;
+  --g2: #008C52;
+  --g3: #00A86B;
+  --gold: #C5973A;
+  --gold2: #E8B84B;
+  --dark: #0D2818;
+  --card: #FFFFFF;
+  --bg: #F0F7F3;
+  --text: #1A3A2A;
+  --muted: #5A7A68;
+  --border: #D4E8DC;
+  --digital: #1565C0;
+  --digital2: #1976D2;
+  --digital-pale: #E3F2FD;
+  --aware: #6A1B9A;
+  --aware2: #7B1FA2;
+  --aware-pale: #F3E5F5;
+  --red: #C62828;
+  --shadow: 0 4px 24px rgba(0,107,63,0.10);
+}
+
+- { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+}
+
+/* ── Header ── */
+.site-header {
+background: linear-gradient(135deg, #003D24 0%, #006B3F 55%, #005232 100%);
+padding: 0;
+position: relative;
+overflow: hidden;
+}
+.site-header::before {
+content:’’;
+position:absolute; inset:0;
+background: url(“data:image/svg+xml,%3Csvg width=‘80’ height=‘80’ viewBox=‘0 0 80 80’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cg fill=’%23ffffff’ fill-opacity=‘0.03’%3E%3Cpolygon points=‘40 0 80 20 80 60 40 80 0 60 0 20’/%3E%3C/g%3E%3C/svg%3E”) center/80px;
+}
+.header-inner {
+position:relative; z-index:2;
+display:flex; align-items:center; justify-content:space-between;
+padding: 18px 32px;
+gap: 20px;
+}
+.header-logo {
+display:flex; align-items:center; gap:14px;
+}
+.logo-emblem {
+width:64px; height:64px;
+background: rgba(255,255,255,0.12);
+border: 2px solid rgba(197,151,58,0.5);
+border-radius:50%;
+display:flex; align-items:center; justify-content:center;
+font-size:28px;
+flex-shrink:0;
+}
+.logo-text { color:white; }
+.logo-text .min { font-size:11px; color:rgba(255,255,255,0.65); letter-spacing:.5px; margin-bottom:2px; }
+.logo-text .school { font-family:‘Cairo’,sans-serif; font-size:17px; font-weight:800; line-height:1.2; }
+.logo-text .school span { color:var(–gold2); }
+.header-title { text-align:center; flex:1; }
+.header-title h1 { font-family:‘Cairo’,sans-serif; font-size:clamp(16px,2.5vw,26px); font-weight:900; color:white; }
+.header-title p { font-size:clamp(11px,1.4vw,14px); color:rgba(255,255,255,0.7); margin-top:4px; }
+.header-staff { text-align:left; color:rgba(255,255,255,0.85); font-size:12px; line-height:1.8; }
+.header-staff strong { color:var(–gold2); font-size:13px; }
+
+/* ── Tabs ── */
+.tabs-bar {
+background: white;
+border-bottom: 3px solid var(–border);
+display:flex;
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+position: sticky; top:0; z-index:100;
+}
+.tab-btn {
+flex:1; padding:14px 8px;
+border:none; background:none; cursor:pointer;
+font-family:‘Cairo’,sans-serif; font-size:clamp(12px,1.6vw,16px); font-weight:700;
+color: var(–muted);
+border-bottom: 4px solid transparent;
+margin-bottom:-3px;
+transition: all .25s;
+display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.tab-btn:hover { color:var(–g1); background:var(–bg); }
+.tab-btn.active-digital { color:var(–digital); border-bottom-color:var(–digital); background:var(–digital-pale); }
+.tab-btn.active-aware { color:var(–aware); border-bottom-color:var(–aware); background:var(–aware-pale); }
+.tab-btn.active-stats { color:var(–g1); border-bottom-color:var(–g1); background:var(–bg); }
+
+/* ── Content ── */
+.content { display:none; padding:28px 24px; max-width:1100px; margin:0 auto; }
+.content.active { display:block; }
+
+/* ── Program Card Header ── */
+.prog-header {
+border-radius:16px; padding:20px 24px; margin-bottom:24px;
+display:flex; align-items:center; gap:16px;
+color:white; position:relative; overflow:hidden;
+}
+.prog-header::before {
+content:’’; position:absolute; left:-20px; top:-20px;
+width:100px; height:100px; border-radius:50%;
+background:rgba(255,255,255,0.08);
+}
+.prog-header .ph-icon { font-size:40px; z-index:1; }
+.prog-header .ph-info { z-index:1; }
+.prog-header .ph-info h2 { font-family:‘Cairo’,sans-serif; font-size:clamp(16px,2vw,22px); font-weight:900; }
+.prog-header .ph-info p { font-size:13px; opacity:.85; margin-top:4px; }
+.prog-header .ph-count {
+margin-right:auto; z-index:1;
+background:rgba(255,255,255,0.15); border-radius:12px; padding:8px 16px;
+text-align:center;
+}
+.prog-header .ph-count .num { font-size:28px; font-weight:900; font-family:‘Cairo’,sans-serif; }
+.prog-header .ph-count .lbl { font-size:11px; opacity:.8; }
+
+.digital-hdr { background: linear-gradient(135deg, #0D47A1, #1976D2); }
+.aware-hdr   { background: linear-gradient(135deg, #4A148C, #7B1FA2); }
+
+/* ── Program List ── */
+.programs-grid { display:flex; flex-direction:column; gap:16px; }
+
+.prog-item {
+background:white; border-radius:14px;
+box-shadow: var(–shadow);
+overflow:hidden;
+border-right: 5px solid;
+transition: box-shadow .2s;
+}
+.prog-item:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+.prog-item.digital-item { border-color: var(–digital); }
+.prog-item.aware-item   { border-color: var(–aware); }
+
+.prog-item-header {
+padding:14px 20px;
+display:flex; align-items:center; gap:12px;
+cursor:pointer; user-select:none;
+}
+.prog-item-header .pi-icon {
+width:42px; height:42px; border-radius:10px;
+display:flex; align-items:center; justify-content:center;
+font-size:20px; flex-shrink:0;
+}
+.digital-item .pi-icon { background:var(–digital-pale); }
+.aware-item   .pi-icon { background:var(–aware-pale); }
+
+.prog-item-header .pi-name {
+font-family:‘Cairo’,sans-serif; font-size:clamp(13px,1.6vw,17px); font-weight:800;
+flex:1;
+}
+.digital-item .pi-name { color:var(–digital); }
+.aware-item   .pi-name { color:var(–aware); }
+
+.pi-toggle {
+width:28px; height:28px; border-radius:50%;
+display:flex; align-items:center; justify-content:center;
+font-size:14px; transition:transform .3s;
+color:var(–muted);
+}
+.prog-item.open .pi-toggle { transform:rotate(180deg); }
+
+/* ── Measurement Form ── */
+.measure-form {
+display:none; padding:0 20px 20px;
+border-top: 1px solid var(–border);
+}
+.prog-item.open .measure-form { display:block; }
+
+.form-section-title {
+font-family:‘Cairo’,sans-serif; font-size:14px; font-weight:700;
+color:var(–muted); margin:16px 0 10px;
+display:flex; align-items:center; gap:8px;
+}
+.form-section-title::after {
+content:’’; flex:1; height:1px; background:var(–border);
+}
+
+/* Stars Rating */
+.stars-group { display:flex; flex-direction:column; gap:10px; }
+.star-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.star-row .sr-label { font-size:13px; color:var(–text); min-width:160px; font-weight:500; }
+.stars { display:flex; gap:4px; direction:ltr; }
+.stars input { display:none; }
+.stars label {
+font-size:22px; cursor:pointer; color:#DDD;
+transition: color .15s, transform .15s;
+}
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked ~ label { color: var(–gold); }
+.stars label:hover { transform:scale(1.2); }
+
+/* Number inputs */
+.num-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.num-field label { font-size:12px; color:var(–muted); display:block; margin-bottom:4px; font-weight:600; }
+.num-field input, .num-field select, .num-field textarea {
+width:100%; padding:9px 12px;
+border:2px solid var(–border); border-radius:8px;
+font-family:‘Tajawal’,sans-serif; font-size:14px; color:var(–text);
+background:var(–bg); outline:none;
+transition:border-color .2s;
+}
+.num-field input:focus, .num-field select:focus, .num-field textarea:focus {
+border-color:var(–g1);
+}
+.num-field textarea { resize:vertical; min-height:64px; }
+
+/* Checkboxes */
+.check-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.check-item {
+display:flex; align-items:center; gap:6px;
+background:var(–bg); border:2px solid var(–border);
+border-radius:8px; padding:6px 12px; cursor:pointer;
+font-size:13px; transition:all .2s;
+}
+.check-item input { accent-color:var(–g1); }
+.check-item:has(input:checked) { border-color:var(–g1); background:var(–edu-green-pale,#E6F4EE); color:var(–g1); font-weight:600; }
+
+/* Save Button */
+.save-btn {
+margin-top:16px;
+background:linear-gradient(135deg,var(–g1),var(–g2));
+color:white; border:none; border-radius:10px;
+padding:11px 28px; font-family:‘Cairo’,sans-serif; font-size:15px; font-weight:700;
+cursor:pointer; transition:all .2s;
+display:flex; align-items:center; gap:8px;
+}
+.save-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,107,63,0.3); }
+.save-btn.saved { background:linear-gradient(135deg,#2E7D32,#43A047); }
+
+/* ── STATS TAB ── */
+.stats-header {
+background:linear-gradient(135deg,var(–g1),var(–g2));
+border-radius:16px; padding:20px 28px; margin-bottom:24px;
+color:white; display:flex; align-items:center; gap:16px;
+}
+.stats-header h2 { font-family:‘Cairo’,sans-serif; font-size:22px; font-weight:900; }
+.stats-header p { font-size:13px; opacity:.8; margin-top:4px; }
+
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
+.kpi-card {
+background:white; border-radius:14px; padding:20px;
+text-align:center; box-shadow:var(–shadow);
+border-top:4px solid;
+}
+.kpi-card .kv { font-family:‘Cairo’,sans-serif; font-size:36px; font-weight:900; }
+.kpi-card .kl { font-size:12px; color:var(–muted); margin-top:4px; font-weight:600; }
+
+.chart-section { background:white; border-radius:14px; padding:20px; box-shadow:var(–shadow); margin-bottom:20px; }
+.chart-section h3 { font-family:‘Cairo’,sans-serif; font-size:16px; font-weight:800; color:var(–text); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+
+.bar-chart { display:flex; flex-direction:column; gap:12px; }
+.bar-row { display:flex; align-items:center; gap:10px; }
+.bar-label { font-size:12px; color:var(–text); min-width:150px; text-align:right; font-weight:600; line-height:1.3; }
+.bar-track { flex:1; background:var(–bg); border-radius:8px; height:28px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:8px; display:flex; align-items:center; padding-right:10px; font-size:12px; font-weight:700; color:white; transition:width 1s cubic-bezier(.4,0,.2,1); min-width:30px; }
+.bar-val { font-size:12px; font-weight:700; color:var(–muted); min-width:40px; }
+
+.export-btn {
+background:linear-gradient(135deg,var(–gold),var(–gold2));
+color:white; border:none; border-radius:10px;
+padding:12px 28px; font-family:‘Cairo’,sans-serif; font-size:15px; font-weight:700;
+cursor:pointer; display:flex; align-items:center; gap:8px;
+transition:all .2s; margin:0 auto;
+}
+.export-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(197,151,58,0.4); }
+
+.toast {
+position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+background:var(–g1); color:white; padding:12px 24px;
+border-radius:50px; font-size:14px; font-weight:600;
+box-shadow:0 8px 24px rgba(0,0,0,0.2);
+transition:transform .3s; z-index:999;
+display:flex; align-items:center; gap:8px;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* responsive */
+@media(max-width:600px){
+.header-inner { flex-wrap:wrap; padding:14px 16px; }
+.header-staff { display:none; }
+.content { padding:16px 12px; }
+.prog-item-header { padding:12px 14px; }
+.star-row { flex-direction:column; align-items:flex-start; }
+.star-row .sr-label { min-width:auto; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- HEADER -->
+
+<div class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-emblem">🎓</div>
+      <div class="logo-text">
+        <div class="min">وزارة التعليم • المملكة العربية السعودية</div>
+        <div class="school">الثانوية الثالثة <span>بالخبر</span></div>
+      </div>
+    </div>
+    <div class="header-title">
+      <h1>📊 قياس أثر البرامج المدرسية</h1>
+      <p>النادي الرقمي &nbsp;|&nbsp; برامج الوعي الفكري</p>
+    </div>
+    <div class="header-staff">
+      <div>المديرة: <strong>منى بنت موسى الزهراني</strong></div>
+      <div>المنسقة: <strong>بنان مريح عسيري</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+
+<div class="tabs-bar">
+  <button class="tab-btn active-digital" onclick="switchTab('digital',this)">
+    💻 النادي الرقمي
+  </button>
+  <button class="tab-btn" onclick="switchTab('aware',this)">
+    🧠 الوعي الفكري
+  </button>
+  <button class="tab-btn" onclick="switchTab('stats',this)">
+    📈 الإحصاءات
+  </button>
+</div>
+
+<!-- ══════════════ TAB: DIGITAL ══════════════ -->
+
+<div class="content active" id="tab-digital">
+  <div class="prog-header digital-hdr">
+    <div class="ph-icon">💻</div>
+    <div class="ph-info">
+      <h2>برامج النادي الرقمي</h2>
+      <p>قياس الأثر والفاعلية لكل برنامج على حدة</p>
+    </div>
+    <div class="ph-count">
+      <div class="num">5</div>
+      <div class="lbl">برامج</div>
+    </div>
+  </div>
+
+  <div class="programs-grid" id="digital-programs">
+    <!-- Programs injected by JS -->
+  </div>
+</div>
+
+<!-- ══════════════ TAB: AWARE ══════════════ -->
+
+<div class="content" id="tab-aware">
+  <div class="prog-header aware-hdr">
+    <div class="ph-icon">🧠</div>
+    <div class="ph-info">
+      <h2>برامج الوعي الفكري</h2>
+      <p>قياس الأثر والفاعلية لكل برنامج على حدة</p>
+    </div>
+    <div class="ph-count">
+      <div class="num">11</div>
+      <div class="lbl">برامج</div>
+    </div>
+  </div>
+
+  <div class="programs-grid" id="aware-programs">
+  </div>
+</div>
+
+<!-- ══════════════ TAB: STATS ══════════════ -->
+
+<div class="content" id="tab-stats">
+  <div class="stats-header">
+    <div style="font-size:40px">📊</div>
+    <div>
+      <h2>لوحة الإحصاءات الشاملة</h2>
+      <p>ملخص تلقائي لجميع بيانات البرامج المُدخلة</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="kpi-grid">
+    <div class="kpi-card" style="border-color:var(--digital)">
+      <div class="kv" id="kpi-d-programs" style="color:var(--digital)">0</div>
+      <div class="kl">برامج النادي الرقمي المُقيّمة</div>
+    </div>
+    <div class="kpi-card" style="border-color:var(--aware)">
+      <div class="kv" id="kpi-a-programs" style="color:var(--aware)">0</div>
+      <div class="kl">برامج الوعي الفكري المُقيّمة</div>
+    </div>
+    <div class="kpi-card" style="border-color:var(--g1)">
+      <div class="kv" id="kpi-total-students" style="color:var(--g1)">0</div>
+      <div class="kl">إجمالي الطالبات المستفيدات</div>
+    </div>
+    <div class="kpi-card" style="border-color:var(--gold)">
+      <div class="kv" id="kpi-avg-rating" style="color:var(--gold)">-</div>
+      <div class="kl">متوسط تقييم الأثر</div>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <h3>💻 تقييم برامج النادي الرقمي</h3>
+    <div class="bar-chart" id="chart-digital"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>🧠 تقييم برامج الوعي الفكري</h3>
+    <div class="bar-chart" id="chart-aware"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>📋 ملاحظات المنسقة</h3>
+    <div id="notes-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+
+  <div style="text-align:center; margin-top:20px;">
+    <button class="export-btn" onclick="exportData()">
+      ⬇️ تصدير التقرير (نسخ النص)
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ تم الحفظ بنجاح!</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+const digitalPrograms = [
+  { id:'d1', icon:'🔍', name:'خدمة تحقق من بوابة حصين' },
+  { id:'d2', icon:'🕌', name:'تطبيق زكاتي' },
+  { id:'d3', icon:'💚', name:'الحملة الوطنية إحسان' },
+  { id:'d4', icon:'🛡️', name:'المتنمر الإلكتروني وكيف أصبح مكشوفاً' },
+  { id:'d5', icon:'🎮', name:'الألعاب الإلكترونية وكيف نختار العمر المناسب' },
+];
+const awarePrograms = [
+  { id:'a1',  icon:'🔍', name:'خدمة تحقق من بوابة حصين' },
+  { id:'a2',  icon:'🕌', name:'تطبيق زكاتي' },
+  { id:'a3',  icon:'💚', name:'الحملة الوطنية إحسان' },
+  { id:'a4',  icon:'⏰', name:'ساعة وعي' },
+  { id:'a5',  icon:'🌸', name:'مبادرة كوني واعية بصحتك' },
+  { id:'a6',  icon:'🌍', name:'أهلاً بالعالم' },
+  { id:'a7',  icon:'⚖️', name:'النهج الوسطي' },
+  { id:'a8',  icon:'📜', name:'ميثاق الوعي الفكري' },
+  { id:'a9',  icon:'👗', name:'مسابقة تصميم الأزياء القديمة الوطنية بلمسات حديثة' },
+  { id:'a10', icon:'🏛️', name:'أمانة وطن وكيف نحافظ على الموارد الوطنية في المدرسة' },
+  { id:'a11', icon:'🎨', name:'حصص الانتظار وتفعيل عام الحرف 2025' },
+];
+
+const ratingLabels = [
+  { key:'r_knowledge', label:'مستوى اكتساب المعرفة' },
+  { key:'r_engage',    label:'مستوى التفاعل والمشاركة' },
+  { key:'r_impact',    label:'أثر البرنامج على سلوك الطالبة' },
+  { key:'r_org',       label:'جودة التنظيم والتنفيذ' },
+  { key:'r_overall',   label:'التقييم العام للبرنامج' },
+];
+
+const outcomeOptions = ['تغيير سلوكي ملحوظ','اكتساب مهارة رقمية','رفع الوعي الفكري','تحقيق تحصيل أفضل','مشاركة أولياء الأمور','نشر في وسائل التواصل'];
+
+// ══════════════════════════════════════════
+// RENDER PROGRAMS
+// ══════════════════════════════════════════
+function buildForm(prog, type) {
+  const cls = type === 'digital' ? 'digital-item' : 'aware-item';
+  const starRows = ratingLabels.map(r => `
+    <div class="star-row">
+      <span class="sr-label">${r.label}</span>
+      <div class="stars" id="stars-${prog.id}-${r.key}">
+        ${[5,4,3,2,1].map(n=>`
+          <input type="radio" name="${prog.id}-${r.key}" id="s${prog.id}${r.key}${n}" value="${n}">
+          <label for="s${prog.id}${r.key}${n}" title="${n} نجوم">★</label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  const outcomes = outcomeOptions.map((o,i)=>`
+    <label class="check-item">
+      <input type="checkbox" name="${prog.id}-outcome" value="${o}"> ${o}
+    </label>
+  `).join('');
+
+  return `
+  <div class="prog-item ${cls}" id="item-${prog.id}">
+    <div class="prog-item-header" onclick="toggleItem('${prog.id}')">
+      <div class="pi-icon">${prog.icon}</div>
+      <div class="pi-name">${prog.name}</div>
+      <div class="pi-toggle" id="toggle-${prog.id}">▼</div>
+    </div>
+    <div class="measure-form" id="form-${prog.id}">
+
+      <div class="form-section-title">📅 معلومات التنفيذ</div>
+      <div class="num-grid">
+        <div class="num-field">
+          <label>تاريخ تنفيذ البرنامج</label>
+          <input type="date" id="${prog.id}-date">
+        </div>
+        <div class="num-field">
+          <label>عدد الطالبات المستفيدات</label>
+          <input type="number" id="${prog.id}-students" placeholder="0" min="0">
+        </div>
+        <div class="num-field">
+          <label>عدد الجلسات / اللقاءات</label>
+          <input type="number" id="${prog.id}-sessions" placeholder="0" min="0">
+        </div>
+        <div class="num-field">
+          <label>مدة البرنامج (بالدقائق)</label>
+          <input type="number" id="${prog.id}-duration" placeholder="0" min="0">
+        </div>
+      </div>
+
+      <div class="form-section-title">⭐ تقييم الأثر</div>
+      <div class="stars-group">${starRows}</div>
+
+      <div class="form-section-title">🎯 النواتج المحققة</div>
+      <div class="check-grid">${outcomes}</div>
+
+      <div class="form-section-title">📝 ملاحظات وتوصيات</div>
+      <div class="num-grid" style="grid-template-columns:1fr">
+        <div class="num-field">
+          <label>ملاحظات المنسقة</label>
+          <textarea id="${prog.id}-notes" placeholder="اكتبي ملاحظاتك وتوصياتك حول البرنامج..."></textarea>
+
+```
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="saveProgram('${prog.id}','${type}')">
+    💾 حفظ تقييم البرنامج
+  </button>
+</div>
+```
+
+  </div>`;
+}
+
+document.getElementById(‘digital-programs’).innerHTML = digitalPrograms.map(p=>buildForm(p,‘digital’)).join(’’);
+document.getElementById(‘aware-programs’).innerHTML   = awarePrograms.map(p=>buildForm(p,‘aware’)).join(’’);
+
+// Restore saved data
+function restoreAll() {
+[…digitalPrograms,…awarePrograms].forEach(p => {
+const saved = getSaved(p.id);
+if(!saved) return;
+if(saved.date) document.getElementById(`${p.id}-date`).value = saved.date;
+if(saved.students) document.getElementById(`${p.id}-students`).value = saved.students;
+if(saved.sessions) document.getElementById(`${p.id}-sessions`).value = saved.sessions;
+if(saved.duration) document.getElementById(`${p.id}-duration`).value = saved.duration;
+if(saved.notes) document.getElementById(`${p.id}-notes`).value = saved.notes;
+ratingLabels.forEach(r => {
+if(saved[r.key]) {
+const radio = document.getElementById(`s${p.id}${r.key}${saved[r.key]}`);
+if(radio) radio.checked = true;
+}
+});
+if(saved.outcomes) {
+document.querySelectorAll(`input[name="${p.id}-outcome"]`).forEach(cb=>{
+cb.checked = saved.outcomes.includes(cb.value);
+});
+}
+});
+}
+restoreAll();
+
+// ══════════════════════════════════════════
+// TOGGLE
+// ══════════════════════════════════════════
+function toggleItem(id) {
+const el = document.getElementById(‘item-’+id);
+el.classList.toggle(‘open’);
+}
+
+// ══════════════════════════════════════════
+// SAVE
+// ══════════════════════════════════════════
+function getSaved(id) {
+try { return JSON.parse(localStorage.getItem(‘prog_’+id)) || null; } catch{ return null; }
+}
+
+function saveProgram(id, type) {
+const data = {
+date:     document.getElementById(`${id}-date`).value,
+students: document.getElementById(`${id}-students`).value,
+sessions: document.getElementById(`${id}-sessions`).value,
+duration: document.getElementById(`${id}-duration`).value,
+notes:    document.getElementById(`${id}-notes`).value,
+outcomes: […document.querySelectorAll(`input[name="${id}-outcome"]:checked`)].map(c=>c.value),
+type,
+};
+ratingLabels.forEach(r => {
+const checked = document.querySelector(`input[name="${id}-${r.key}"]:checked`);
+data[r.key] = checked ? parseInt(checked.value) : 0;
+});
+localStorage.setItem(‘prog_’+id, JSON.stringify(data));
+const btn = document.querySelector(`#item-${id} .save-btn`);
+btn.classList.add(‘saved’);
+btn.textContent = ‘✅ تم الحفظ’;
+showToast(‘تم حفظ تقييم البرنامج بنجاح ✅’);
+updateStats();
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+function updateStats() {
+const allProgs = […digitalPrograms,…awarePrograms];
+let dCount=0, aCount=0, totalStudents=0, allRatings=[], notesList=[];
+
+const buildChart = (progs, containerId, color) => {
+const container = document.getElementById(containerId);
+container.innerHTML = ‘’;
+progs.forEach(p => {
+const s = getSaved(p.id);
+if(!s) return;
+const avgR = ratingLabels.map(r=>s[r.key]||0).reduce((a,b)=>a+b,0)/ratingLabels.length;
+const pct = (avgR/5)*100;
+const row = document.createElement(‘div’);
+row.className=‘bar-row’;
+row.innerHTML=`<span class="bar-label">${p.icon} ${p.name}</span> <div class="bar-track"><div class="bar-fill" style="width:${pct.toFixed(0)}%;background:${color}">${avgR.toFixed(1)}/5</div></div> <span class="bar-val">${p.students||s.students||0} طالبة</span>`;
+container.appendChild(row);
+});
+if(!container.children.length) container.innerHTML=’<p style="color:var(--muted);font-size:13px;padding:8px">لم يتم إدخال بيانات بعد</p>’;
+};
+
+allProgs.forEach(p => {
+const s = getSaved(p.id);
+if(!s) return;
+if(s.type===‘digital’) dCount++;
+else aCount++;
+totalStudents += parseInt(s.students||0);
+ratingLabels.forEach(r=>{ if(s[r.key]) allRatings.push(s[r.key]); });
+if(s.notes) notesList.push({name:p.name, icon:p.icon, note:s.notes, type:s.type});
+});
+
+document.getElementById(‘kpi-d-programs’).textContent = dCount;
+document.getElementById(‘kpi-a-programs’).textContent = aCount;
+document.getElementById(‘kpi-total-students’).textContent = totalStudents;
+const avgAll = allRatings.length ? (allRatings.reduce((a,b)=>a+b,0)/allRatings.length).toFixed(1) : ‘-’;
+document.getElementById(‘kpi-avg-rating’).textContent = avgAll !== ‘-’ ? `${avgAll}★` : ‘-’;
+
+buildChart(digitalPrograms, ‘chart-digital’, ‘linear-gradient(90deg,#1565C0,#1976D2)’);
+buildChart(awarePrograms,   ‘chart-aware’,   ‘linear-gradient(90deg,#6A1B9A,#7B1FA2)’);
+
+const nl = document.getElementById(‘notes-list’);
+nl.innerHTML = notesList.length ? notesList.map(n=>`<div style="background:var(--bg);border-radius:10px;padding:12px 16px;border-right:4px solid ${n.type==='digital'?'var(--digital)':'var(--aware)'}"> <div style="font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;color:${n.type==='digital'?'var(--digital)':'var(--aware)'};margin-bottom:4px">${n.icon} ${n.name}</div> <div style="font-size:13px;color:var(--text);line-height:1.7">${n.note}</div> </div>`).join(’’) : ‘<p style="color:var(--muted);font-size:13px">لا توجد ملاحظات مُدخلة بعد</p>’;
+}
+updateStats();
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function switchTab(name, btn) {
+document.querySelectorAll(’.content’).forEach(c=>c.classList.remove(‘active’));
+document.querySelectorAll(’.tab-btn’).forEach(b=>{
+b.classList.remove(‘active-digital’,‘active-aware’,‘active-stats’);
+});
+document.getElementById(‘tab-’+name).classList.add(‘active’);
+btn.classList.add(‘active-’+name);
+if(name===‘stats’) updateStats();
+}
+
+// ══════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════
+function exportData() {
+const allProgs=[…digitalPrograms,…awarePrograms];
+let text=‘📊 تقرير أثر البرامج - الثانوية الثالثة بالخبر\n’;
+text+=‘المديرة: منى بنت موسى الزهراني | المنسقة: بنان مريح عسيري\n’;
+text+=‘═’.repeat(50)+’\n\n’;
+allProgs.forEach(p=>{
+const s=getSaved(p.id); if(!s) return;
+text+=`${p.icon} ${p.name}\n`;
+text+=`النوع: ${s.type==='digital'?'النادي الرقمي':'الوعي الفكري'}\n`;
+text+=`الطالبات: ${s.students||0} | الجلسات: ${s.sessions||0} | المدة: ${s.duration||0} دقيقة\n`;
+ratingLabels.forEach(r=>{ if(s[r.key]) text+=`${r.label}: ${s[r.key]}/5\n`; });
+if(s.outcomes?.length) text+=`النواتج: ${s.outcomes.join(', ')}\n`;
+if(s.notes) text+=`الملاحظات: ${s.notes}\n`;
+text+=‘─’.repeat(40)+’\n’;
+});
+navigator.clipboard.writeText(text).then(()=>showToast(‘تم نسخ التقرير! 📋’)).catch(()=>showToast(‘جرّبي التصدير من جهاز آخر’));
+}
+
+function showToast(msg) {
+const t=document.getElementById(‘toast’);
+t.textContent=msg; t.classList.add(‘show’);
+setTimeout(()=>t.classList.remove(‘show’),3000);
+}
+</script>
+
+</body>
+</html>
