@@ -1,0 +1,170 @@
+<script>
+var DP=[
+  {id:'d1',ico:'🔍',nm:'خدمة تحقق من بوابة حصين'},
+  {id:'d2',ico:'🕌',nm:'تطبيق زكاتي'},
+  {id:'d3',ico:'💚',nm:'الحملة الوطنية إحسان'},
+  {id:'d4',ico:'🛡️',nm:'المتنمر الإلكتروني وكيف أصبح مكشوفاً'},
+  {id:'d5',ico:'🎮',nm:'الألعاب الإلكترونية وكيف نختار العمر المناسب'}
+];
+var AP=[
+  {id:'a1',ico:'🔍',nm:'خدمة تحقق من بوابة حصين'},
+  {id:'a2',ico:'🕌',nm:'تطبيق زكاتي'},
+  {id:'a3',ico:'💚',nm:'الحملة الوطنية إحسان'},
+  {id:'a4',ico:'⏰',nm:'ساعة وعي'},
+  {id:'a5',ico:'🌸',nm:'مبادرة كوني واعية بصحتك'},
+  {id:'a6',ico:'🌍',nm:'أهلاً بالعالم'},
+  {id:'a7',ico:'⚖️',nm:'النهج الوسطي'},
+  {id:'a8',ico:'📜',nm:'ميثاق الوعي الفكري'},
+  {id:'a9',ico:'👗',nm:'مسابقة تصميم الأزياء القديمة بلمسات حديثة'},
+  {id:'a10',ico:'🏛️',nm:'أمانة وطن والحفاظ على الموارد الوطنية'},
+  {id:'a11',ico:'🎨',nm:'حصص الانتظار وتفعيل عام الحرف 2025'}
+];
+var RL=[
+  {k:'r1',l:'اكتساب المعرفة'},
+  {k:'r2',l:'التفاعل والمشاركة'},
+  {k:'r3',l:'الأثر السلوكي'},
+  {k:'r4',l:'جودة التنفيذ'},
+  {k:'r5',l:'التقييم العام'}
+];
+var OO=['تغيير سلوكي','مهارة رقمية','رفع الوعي','مشاركة أولياء الأمور','نشر في التواصل','تحصيل أفضل'];
+function ld(id){try{return JSON.parse(localStorage.getItem('p_'+id))||null;}catch(e){return null;}}
+function sv(id,d){try{localStorage.setItem('p_'+id,JSON.stringify(d));}catch(e){}}
+function mkCard(p,type){
+  var cls=type==='d'?'dc':'ac';
+  var stars='';
+  for(var i=0;i<RL.length;i++){
+    var r=RL[i];
+    var s='<div class="stars">';
+    for(var n=5;n>=1;n--){
+      s+='<input type="radio" name="'+p.id+'-'+r.k+'" id="r'+p.id+r.k+n+'" value="'+n+'">';
+      s+='<label for="r'+p.id+r.k+n+'">★</label>';
+    }
+    s+='</div>';
+    stars+='<div class="srow"><span class="slbl">'+r.l+'</span>'+s+'</div>';
+  }
+  var checks='';
+  for(var j=0;j<OO.length;j++){
+    checks+='<label class="ck"><input type="checkbox" name="'+p.id+'-ck" value="'+OO[j]+'"> '+OO[j]+'</label>';
+  }
+  return '<div class="prog-card '+cls+'" id="pc-'+p.id+'">'
+    +'<div class="prog-top" id="top-'+p.id+'">'
+    +'<div class="ico">'+p.ico+'</div>'
+    +'<div class="nm">'+p.nm+'</div>'
+    +'<div class="arr">▼</div>'
+    +'</div>'
+    +'<div class="prog-form">'
+    +'<div class="ftitle">📅 معلومات التنفيذ</div>'
+    +'<div class="fgrid">'
+    +'<div class="fitem"><label>التاريخ</label><input type="date" id="'+p.id+'-dt"></div>'
+    +'<div class="fitem"><label>عدد الطالبات</label><input type="number" id="'+p.id+'-st" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'<div class="fitem"><label>عدد الجلسات</label><input type="number" id="'+p.id+'-ss" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'<div class="fitem"><label>المدة (دقيقة)</label><input type="number" id="'+p.id+'-du" placeholder="0" min="0" inputmode="numeric"></div>'
+    +'</div>'
+    +'<div class="ftitle">⭐ تقييم الأثر</div>'
+    +'<div class="stars-wrap">'+stars+'</div>'
+    +'<div class="ftitle">🎯 النواتج</div>'
+    +'<div class="cks">'+checks+'</div>'
+    +'<div class="ftitle">📝 ملاحظات</div>'
+    +'<div class="fgrid full"><div class="fitem"><label>ملاحظات المنسقة</label><textarea id="'+p.id+'-nt" placeholder="اكتبي ملاحظاتك..."></textarea></div></div>'
+    +'<button class="sbtn" id="sb-'+p.id+'" onclick="doSave(\''+p.id+'\',\''+type+'\')">💾 حفظ التقييم</button>'
+    +'</div></div>';
+}
+document.getElementById('list-d').innerHTML=DP.map(function(p){return mkCard(p,'d');}).join('');
+document.getElementById('list-a').innerHTML=AP.map(function(p){return mkCard(p,'a');}).join('');
+function attachHandlers(){
+  var all=DP.concat(AP);
+  for(var i=0;i<all.length;i++){
+    (function(id){
+      var top=document.getElementById('top-'+id);
+      if(top){
+        top.addEventListener('click',function(){tog(id);});
+        top.addEventListener('touchend',function(e){e.preventDefault();tog(id);});
+      }
+    })(all[i].id);
+  }
+}
+function restore(){
+  var all=DP.concat(AP);
+  for(var i=0;i<all.length;i++){
+    var p=all[i];var d=ld(p.id);if(!d)continue;
+    var fs=['dt','st','ss','du','nt'];
+    for(var j=0;j<fs.length;j++){var el=document.getElementById(p.id+'-'+fs[j]);if(el&&d[fs[j]])el.value=d[fs[j]];}
+    for(var k=0;k<RL.length;k++){var r=RL[k];if(d[r.k]){var el2=document.getElementById('r'+p.id+r.k+d[r.k]);if(el2)el2.checked=true;}}
+    if(d.ck){var cks=document.querySelectorAll('input[name="'+p.id+'-ck"]');for(var m=0;m<cks.length;m++)cks[m].checked=d.ck.indexOf(cks[m].value)>=0;}
+    var sb=document.getElementById('sb-'+p.id);if(sb){sb.classList.add('done');sb.textContent='✅ تم الحفظ';}
+  }
+}
+attachHandlers();restore();
+function tog(id){
+  var el=document.getElementById('pc-'+id);
+  var wasOpen=el.classList.contains('open');
+  var all=document.querySelectorAll('.prog-card.open');
+  for(var i=0;i<all.length;i++)all[i].classList.remove('open');
+  if(!wasOpen){el.classList.add('open');setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'nearest'});},150);}
+}
+function goTab(t){
+  var pages=document.querySelectorAll('.page');for(var i=0;i<pages.length;i++)pages[i].classList.remove('show');
+  var tabs=document.querySelectorAll('.tab');for(var j=0;j<tabs.length;j++)tabs[j].classList.remove('t-d','t-a','t-s');
+  document.getElementById('page-'+t).classList.add('show');
+  document.getElementById('btn-'+t).classList.add('t-'+t);
+  if(t==='s')buildStats();
+}
+function doSave(id,type){
+  var d={type:type};
+  var fs=['dt','st','ss','du','nt'];
+  for(var i=0;i<fs.length;i++){var el=document.getElementById(id+'-'+fs[i]);d[fs[i]]=el?el.value:'';}
+  for(var j=0;j<RL.length;j++){var r=RL[j];var c=document.querySelector('input[name="'+id+'-'+r.k+'"]:checked');d[r.k]=c?parseInt(c.value):0;}
+  var cks=document.querySelectorAll('input[name="'+id+'-ck"]:checked');d.ck=[];
+  for(var k=0;k<cks.length;k++)d.ck.push(cks[k].value);
+  sv(id,d);
+  var sb=document.getElementById('sb-'+id);sb.classList.add('done');sb.textContent='✅ تم الحفظ';
+  showToast('تم حفظ التقييم بنجاح ✅');
+}
+function buildStats(){
+  var all=DP.concat(AP);var dc=0,ac=0,ts=0,rats=[];
+  for(var i=0;i<all.length;i++){var d=ld(all[i].id);if(!d)continue;if(d.type==='d')dc++;else ac++;ts+=parseInt(d.st||0);for(var j=0;j<RL.length;j++){if(d[RL[j].k])rats.push(d[RL[j].k]);}}
+  document.getElementById('kd').textContent=dc;document.getElementById('ka').textContent=ac;document.getElementById('ks').textContent=ts;
+  var avg=rats.length?(rats.reduce(function(a,b){return a+b;},0)/rats.length).toFixed(1)+' ★':'-';
+  document.getElementById('kr').textContent=avg;
+  function mkChart(progs,elId,color){
+    var el=document.getElementById(elId);el.innerHTML='';var any=false;
+    for(var i=0;i<progs.length;i++){var p=progs[i];var d=ld(p.id);if(!d)continue;any=true;
+      var sum=0;for(var j=0;j<RL.length;j++)sum+=d[RL[j].k]||0;
+      var av=sum/RL.length;var pct=Math.round((av/5)*100);
+      var row=document.createElement('div');row.className='brow';
+      row.innerHTML='<span class="blbl">'+p.ico+' '+p.nm+'</span><div class="btrack"><div class="bfill" style="width:'+pct+'%;background:'+color+'">'+av.toFixed(1)+'/5</div></div><span class="bval">'+(d.st||0)+'</span>';
+      el.appendChild(row);}
+    if(!any)el.innerHTML='<p class="empty">لم يتم إدخال بيانات بعد</p>';
+  }
+  mkChart(DP,'cd','linear-gradient(90deg,#1565C0,#42A5F5)');
+  mkChart(AP,'ca','linear-gradient(90deg,#6A1B9A,#AB47BC)');
+  var cn=document.getElementById('cn');cn.innerHTML='';var hasN=false;
+  for(var i=0;i<all.length;i++){var p=all[i];var d=ld(p.id);if(!d||!d.nt)continue;hasN=true;
+    var el=document.createElement('div');el.className='note-item';
+    el.innerHTML='<div class="nt" style="color:'+(d.type==='d'?'var(--digital)':'var(--aware)')+'">'+p.ico+' '+p.nm+'</div><div class="nb">'+d.nt+'</div>';
+    cn.appendChild(el);}
+  if(!hasN)cn.innerHTML='<p class="empty">لا توجد ملاحظات بعد</p>';
+}
+function doExport(){
+  var all=DP.concat(AP);
+  var t='تقرير أثر البرامج\nالثانوية الثالثة بالخبر\nالمديرة: منى بنت موسى الزهراني\nالمنسقة: بنان مريح عسيري\n\n';
+  for(var i=0;i<all.length;i++){var p=all[i];var d=ld(p.id);if(!d)continue;
+    t+=p.nm+'\nالنوع: '+(d.type==='d'?'النادي الرقمي':'الوعي الفكري')+'\nالطالبات: '+(d.st||0)+' | الجلسات: '+(d.ss||0)+'\n';
+    for(var j=0;j<RL.length;j++){if(d[RL[j].k])t+=RL[j].l+': '+d[RL[j].k]+'/5\n';}
+    if(d.ck&&d.ck.length)t+='النواتج: '+d.ck.join('، ')+'\n';
+    if(d.nt)t+='ملاحظات: '+d.nt+'\n';t+='---\n';}
+  try{navigator.clipboard.writeText(t).then(function(){showToast('تم نسخ التقرير 📋');}).catch(function(){fbCopy(t);});}catch(e){fbCopy(t);}
+}
+function fbCopy(t){
+  var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';
+  document.body.appendChild(a);a.focus();a.select();
+  try{document.execCommand('copy');showToast('تم نسخ التقرير 📋');}catch(e){showToast('افتحي في متصفح آخر');}
+  document.body.removeChild(a);
+}
+function showToast(m){
+  var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+</script>
+</body>
+</html>
